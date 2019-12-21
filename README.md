@@ -7,8 +7,8 @@
 
 ## Running the code
 Python main.py {twitter OR instagram} {optional, textfile name}
-* ex.1: python main.py twitter checkNames.txt <!-- will search names from text file -->
-* ex.2: python main.py twitter                <!-- will search for program created usernames -->
+* ex.1: python main.py twitter checkNames.txt > will search names from text file
+* ex.2: python main.py twitter                > will search for program created usernames
 
 ## Notice
 * If you generate custom usernames it will attempt all permutations of a given set of letters to a length n
