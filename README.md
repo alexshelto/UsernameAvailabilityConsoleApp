@@ -3,6 +3,7 @@
 ## How it works
 * Program will take a textfile of usernames or generate custom usernames
 * Checks Twitter & Instagram for username availability and writes a textfile of names to use
+* Program sends a request to the account url of the socail media site to determine if an account has already been created
 * Usernames not taken can be found in the text file: availablenames.txt
 
 ## Running the code
