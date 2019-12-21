@@ -10,5 +10,5 @@ Python main.py {twitter OR instagram} {optional, textfile name}
 * ex.2: python main.py twitter                // will generate custom usernames of a given length to search
 
 ## Notice
-If you generate custom usernames it will attempt all permutations of a given set of letters to a length n
-program takes roughly .42 secconds per username check so keep time in mind
+* If you generate custom usernames it will attempt all permutations of a given set of letters to a length n
+* program takes roughly .42 secconds per username check so keep time in mind
