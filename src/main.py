@@ -1,9 +1,8 @@
-'''
-
-
-
-
-'''
+# Alexander Shelton
+#
+#
+#
+#
 
 import sys
 import requests
@@ -19,7 +18,7 @@ SERVICES = ['twitter', 'instagram']
 #setUpSite: Takes the users program argument to check whether or not it is a legitament social media that the program uses
 #The function will then return the url used to search for usernames
 def setUpSite(_website):
-    website = _website
+    website = _website.lower()
     if website not in SERVICES:
         print("'{}' is not an accepted service to check usernames for\nGoodbye.".format(website))
         sys.exit()
@@ -60,20 +59,18 @@ def checkAvailability(_usernames, _url, website):
     print("checking available names") #debugging
     file = open("../names/availablenames.txt", "w") #opening text file to write names to
     for name in _usernames:
-        print("Testing username: {}".format(name))
         url = _url+name
+        if website == "instagram":
+            url +="/?__a=1" #uinstagram wont let you view accounts without logging in so we use a account details link
         try:
-            if website == "instagram":
-                url +="/?__a=1" #uinstagram wont let you view accounts without logging in so we use a account details link
-            r = requests.get(url,allow_redirects=False)
-            print("Checking username: {}".format(url))
-
+            r = requests.get(url)
+            print("Checking username: {}\nStatus code: {}".format(url,r.status_code))
         except requests.exceptions.ConnectionError:
             print("Connection refused, too many requests")
             time.sleep(10)
         #if the webpage was not found, username isnt taken
         if r.status_code==404:
-            print("#\n# Available: {}\n#".format(name))
+            print(">> Available: {}".format(name))
             file.write(name)
             file.write('\n')
     #outside of loop close file
