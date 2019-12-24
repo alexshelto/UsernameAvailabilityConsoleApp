@@ -11,7 +11,7 @@ import time
 
 ##todo: fix instagram, must log in first
 
-SERVICES = ['twitter', 'instagram']
+SERVICES = ['twitter', 'instagram', 'twitch', 'tiktok']
 
 
 
@@ -23,8 +23,18 @@ def setUpSite(_website):
         print("'{}' is not an accepted service to check usernames for\nGoodbye.".format(website))
         sys.exit()
     print("Accepted web service")
-    #Building url
-    url = "https://"+website+".com/"
+    return website
+
+
+def generateURL(_service, _name):
+    if _service == "instagram":
+        url = "https://www.instagram.com/"+_name+"/?__a=1" #uinstagram wont let you view accounts without logging in so we use a account details link
+    elif _service == "twitch":
+        url = "https://www.twitch.tv/"+_name
+    elif _service == "tiktok":
+        url = "https://www.tiktok.com/@"+_name
+    else:#twitter
+        url = "https://www.twitter.com/"+_name
     return url
 
 
@@ -35,6 +45,7 @@ def scrapeList(_filename):
     file = open(path, 'r').read().split('\n')
     for line in file:
         if not line == '':
+            # print(len(line))
             usernames.append(line)
     return usernames
 
@@ -51,17 +62,16 @@ def getNumChars():
     return numChars
 
 
+
 #function will send a request to the websites account searching for the profile of the username
 #if a 404 or page not found is given, then the username is still available,
 #if the page is found, the name is taken
 #Program will write to the file "availablenames.txt" of names still available
-def checkAvailability(_usernames, _url, website):
+def checkAvailability(_usernames, _service, website):
     print("checking available names") #debugging
     file = open("../names/availablenames.txt", "w") #opening text file to write names to
     for name in _usernames:
-        url = _url+name
-        if website == "instagram":
-            url +="/?__a=1" #uinstagram wont let you view accounts without logging in so we use a account details link
+        url = generateURL(_service, name)
         try:
             r = requests.get(url)
             print("Checking username: {}\nStatus code: {}".format(url,r.status_code))
@@ -78,10 +88,13 @@ def checkAvailability(_usernames, _url, website):
     print("complete")
 
 
+
+#Put user input into a function
+
 def main():
     letters = [] #letter pool to generate usernames
     usernames = [] #usernames desired to search
-    url = setUpSite(sys.argv[1])
+    service = setUpSite(sys.argv[1])
     if len(sys.argv) == 3:
         usernames = scrapeList(sys.argv[2])
         print("Usernames collected")
@@ -104,7 +117,7 @@ def main():
             _name = ''.join(name) #turning tuple into a string
             usernames.append(_name)
         print("Usernames generated")
-    checkAvailability(usernames, url,sys.argv[1].lower()) #fix lower to either site name
+    checkAvailability(usernames, service ,sys.argv[1].lower()) #fix lower to either site name
 
 
 
